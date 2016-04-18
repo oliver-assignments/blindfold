@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
     public CharacterController charControl;
     private Vector3 velocity;
 
+	private float scale = 2.5f;
+	private Vector2 movement;
+
+	[SerializeField]
+	private GameObject knife;
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
@@ -36,6 +41,8 @@ public class Player : MonoBehaviour
                 canThrow = false;
 
                 //  Throw knife
+				GameObject g = GameObject.Instantiate(knife);
+				g.GetComponent<KnifeThrow>().Setup(this.gameObject);
             }
         }
         else
@@ -51,7 +58,7 @@ public class Player : MonoBehaviour
             }
         }
             
-        
+		InputMovement();
 
         //Keeping player at a z-pos of 0
         velocity.z = -1 * transform.position.z;
@@ -60,6 +67,44 @@ public class Player : MonoBehaviour
         charControl.Move(velocity * Time.deltaTime);
         cameraTransform.position = transform.position+new Vector3(0, 0, -10);
     }
+
+	private void InputMovement()
+	{
+
+		//used to get input for direction
+		float v = Input.GetAxis("Vertical");
+		float h = Input.GetAxis("Horizontal");
+
+		v *= scale;
+		h *= scale;
+ 
+		//store Movement
+		movement = new Vector2 (h, v);
+		
+		//following code used to make player character face mouse
+		Vector2 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition);       //Mouse position
+		Vector3 objpos = Camera.main.WorldToViewportPoint(transform.position);        //Object position on screen
+		Vector2 relobjpos = new Vector2(objpos.x - 0.5f, objpos.y - 0.5f);            //Set coordinates relative to object's center
+		Vector2 relmousepos = new Vector2(mouse.x - 0.5f, mouse.y - 0.5f) - relobjpos;//Mouse cursor relative to object's center
+		float angle = Vector2.Angle(Vector2.up, relmousepos);                         //Angle calculation
+		
+		//if mouse is on the left side of our object
+		if (relmousepos.x > 0)
+			angle = 360 - angle;
+		
+		//Uncomment this block to make the player move based on the mouse cursor
+		/*float mouseDist = Mathf.Sqrt((relmousepos.x * relmousepos.x) + (relmousepos.y * relmousepos.y)) * 10
+		if (mouseDist > 0.7f || v >= 0) 
+		{
+			movement = angle * movement;
+		}
+		*/
+
+		transform.rotation = Quaternion.Euler(0, 0, angle);
+		velocity = new Vector3(movement.x, movement.y, 0);
+		//GetComponent<Rigidbody2D>().rotation = angle;
+
+	}
 
     void OnTriggerEnter(Collider other)
     {
