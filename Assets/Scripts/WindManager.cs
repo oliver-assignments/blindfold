@@ -13,11 +13,11 @@ public class WindManager : MonoBehaviour
     {
         for (int w = 0; w < wind.Count; w++)
         {
-            for (int q = 0; q < wind.Count; q++)
-            {
-                if (w == q) continue;
+            Transform wT = wind[w].GetComponent<Transform>();
+            Wind wW = wind[w].GetComponent<Wind>();
 
-                Transform wT = wind[w].GetComponent<Transform>();
+            for (int q = w+1; q < wind.Count; q++)
+            {
                 Transform qT = wind[q].GetComponent<Transform>();
                 Wind qW = wind[q].GetComponent<Wind>();
 
@@ -38,6 +38,7 @@ public class WindManager : MonoBehaviour
 
                     //  Apply the force to the other
                     qW.velocity += acceleration;
+                    wW.velocity += -1*acceleration;
                 }
             }
         }
