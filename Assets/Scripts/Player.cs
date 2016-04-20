@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public Transform cameraTransform;
-    public CharacterController charControl;
+    [SerializeField]
+    private CharacterController charControl;
     private Vector3 velocity;
 
 	private float scale = 2.5f;
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	private GameObject knife;
+    [SerializeField]
+    private Image knifeFillImage;
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
@@ -33,6 +36,8 @@ public class Player : MonoBehaviour
     {
         Vector3 mouseDir = new Vector3(Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f, 0);
         transform.forward = mouseDir;
+        
+        InputMovement();
 
         if (canThrow)
         {
@@ -43,6 +48,8 @@ public class Player : MonoBehaviour
                 //  Throw knife
 				GameObject g = GameObject.Instantiate(knife);
 				g.GetComponent<KnifeThrow>().Setup(this.gameObject);
+                knifeFillImage.color = new Color(1, 0, 0, 1);
+                knifeFillImage.fillAmount = 0;
             }
         }
         else
@@ -51,14 +58,15 @@ public class Player : MonoBehaviour
             {
                 knifeTimer = 0;
                 canThrow = true;
+                knifeFillImage.fillAmount = 1;
+                knifeFillImage.color = new Color(0, 1, 0, 1);
             }
             else
             {
                 knifeTimer += Time.deltaTime;
+                knifeFillImage.fillAmount = knifeTimer / knifeCooldown;
             }
         }
-            
-		InputMovement();
 
         //Keeping player at a z-pos of 0
         velocity.z = -1 * transform.position.z;
