@@ -10,6 +10,7 @@ public class WindManager : MonoBehaviour
     public float maxWindForce;
     
     public float windResistForce;
+    public float wrapDistanceFromOrigin;
 
     // Update is called once per frame
     void Update()
@@ -18,6 +19,7 @@ public class WindManager : MonoBehaviour
         {
             Transform wT = wind[w].GetComponent<Transform>();
 
+            //  Wind on wind action
             for (int q = 0; q < wind.Count; q++)
             {
                 if (w == q) continue;
@@ -45,7 +47,7 @@ public class WindManager : MonoBehaviour
                 }
             }
 
-            //The wind collisiosn with real objects
+            //  The wind collisiosn with real objects
             for (int r = 0; r < windResistors.Count; r++)
             {
                 Transform rT = windResistors[r].GetComponent<Transform>();
@@ -72,6 +74,11 @@ public class WindManager : MonoBehaviour
                     wW.velocity += acceleration;
                 }
             }
+
+            while (wT.position.x > wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x - (wrapDistanceFromOrigin*2), wT.position.y, wT.position.z);
+            while (wT.position.x < -wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x + (wrapDistanceFromOrigin*2), wT.position.y, wT.position.z);
+            while (wT.position.y > wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x, wT.position.y - (wrapDistanceFromOrigin*2), wT.position.z);
+            while (wT.position.y < -wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x, wT.position.y + (wrapDistanceFromOrigin*2), wT.position.z);
         }
     }
 }
