@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class WindManager : MonoBehaviour
 {
     public List<GameObject> wind = new List<GameObject>();
+    public List<GameObject> windResistors = new List<GameObject>();
 
     public float maxWindDistance;
     public float maxWindForce;
