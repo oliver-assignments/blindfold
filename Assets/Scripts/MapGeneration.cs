@@ -10,12 +10,14 @@ public class MapGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         windManager = GetComponent<WindManager>();
+        CreateMap();
 	}
 
     public void CreateMap() {
+        for (int b = 0; b < 20; b++) { 
 
-        windManager.windResistors.Add((GameObject)GameObject.Instantiate(blockPiece, Vector3.zero, Quaternion.identity));
-
+            windManager.windResistors.Add((GameObject)GameObject.Instantiate(blockPiece, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity));
+        }
     }
 
 	// Update is called once per frame
