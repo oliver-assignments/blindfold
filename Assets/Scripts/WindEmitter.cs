@@ -19,10 +19,11 @@ public class WindEmitter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (limit > 0)
+
+        if ((hasLimit && limit > 0)||!hasLimit)
         {
             timer += Time.deltaTime;
-            if (timer > cooldown)
+            while (timer > cooldown)
             {
                 timer -= cooldown;
 
