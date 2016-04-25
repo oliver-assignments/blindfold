@@ -8,9 +8,21 @@ public class WindManager : MonoBehaviour
     public float maxWindDistance;
     public float maxWindForce;
 
+    
+    private float windSpeed = 0;
+    private float windPhase = 0;
+    private float windDirection = 0;
+
+    public bool breeze = false;
+    public float breezeForce = 1;
+    public float breezeRotationSpeed = 1;
+    public float breezeBackAndForthSpeed = 1;
+
     // Update is called once per frame
     void Update()
     {
+        if (breeze) { Breeze(); }  //  Breeze
+
         for (int w = 0; w < wind.Count; w++)
         {
             Transform wT = wind[w].GetComponent<Transform>();
@@ -42,5 +54,23 @@ public class WindManager : MonoBehaviour
                 }
             }
         }
+    }
+    void Breeze()
+    {
+        windDirection += breezeRotationSpeed * Time.deltaTime;
+
+        //  Wind speed oscillates from -max to +max
+        windPhase += breezeBackAndForthSpeed * Time.deltaTime;
+        float windSpeed = Mathf.Sin(windPhase) * breezeForce;
+
+        for (int q = 0; q < wind.Count; q++)
+        {
+            Wind qW = wind[q].GetComponent<Wind>();
+
+            qW.velocity = new Vector3(
+                    qW.velocity.x + ((Mathf.Cos(windDirection) * windSpeed) / qW.mass),
+                    qW.velocity.y + ((Mathf.Sin(windDirection) * windSpeed) / qW.mass),
+                    qW.velocity.z);
+        };
     }
 }
