@@ -10,12 +10,10 @@ public class KnifeThrow : MonoBehaviour {
     public CharacterController charControl;
     private Vector3 vel;
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start () {}
 	public void Setup(GameObject shooter)
     {
-        transform.rotation = shooter.transform.rotation;
+        transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
 		vel = transform.forward * speed;
 	}
@@ -29,11 +27,9 @@ public class KnifeThrow : MonoBehaviour {
 		}
 		else
 		{
-            
 			charControl.Move(vel * Time.deltaTime);
             if(charControl.collisionFlags != CollisionFlags.None)
             {
-                Debug.Log("WE HIT A THING");
                 //Embed self in object, stop moving.
                 transform.position += transform.forward*0.1f;
                 vel = Vector3.zero;
