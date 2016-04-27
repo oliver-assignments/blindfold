@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     {
         velocity = Vector3.zero;
 
+        WindManager.Instance.windResistors.Add(gameObject);
+
         audio = GetComponent<AudioSource>();
     }
 	

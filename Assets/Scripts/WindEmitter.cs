@@ -4,10 +4,10 @@ using System.Collections;
 public class WindEmitter : MonoBehaviour {
 
     public GameObject windParticle;
-    public WindManager windManager;
-    public float spread;
+    
+    public float spread =1;
 
-    public float cooldown;
+    public float cooldown = 0.5f;
     private float timer = 0;
 
     public bool hasLimit = false;
@@ -34,7 +34,7 @@ public class WindEmitter : MonoBehaviour {
                     transform.position.y + Random.Range(-spread / 2, spread / 2),
                     transform.position.z);
 
-                windManager.wind.Add((GameObject)GameObject.Instantiate(windParticle, newPosition, transform.rotation));
+                WindManager.Instance.wind.Add((GameObject)GameObject.Instantiate(windParticle, newPosition, transform.rotation));
             }
         }
 	}

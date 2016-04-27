@@ -4,7 +4,7 @@ using System.Collections;
 public class Wind : MonoBehaviour {
 
     private Transform transform;
-    public float mass;
+    public float mass = 1 ;
     public Vector3 velocity;
 
 	// Use this for initialization

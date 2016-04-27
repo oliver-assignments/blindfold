@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WindResistor : MonoBehaviour {
 
-    public float windResistDistance;
+    public float windResistDistance = 1;
 
 	// Use this for initialization
 	void Start () {
