@@ -14,8 +14,7 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	private GameObject knife;
-    [SerializeField]
-    private Image knifeFillImage;
+    public Image knifeFillImage;
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
