@@ -10,13 +10,9 @@ public class MenuBehavior : MonoBehaviour
         Application.LoadLevel(levelName);
     }
 
-    public void loadCurrentLevel()
+    public void ExitGame()
     {
-        Application.LoadLevel(LevelManager.currentLevel);
-    }
-    public void loadNextLevel()
-    {
-        Application.LoadLevel(LevelManager.nextLevel);
+        Application.Quit();
     }
 
     public void switchVisible(int newVisibleIndex)
