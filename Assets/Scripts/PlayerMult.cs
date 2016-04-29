@@ -31,13 +31,13 @@ public class PlayerMult : MonoBehaviour
 		if (playerPV.isMine) {
 			cameraTransform = Camera.main.transform;
 			knifeFillImage = GameObject.FindGameObjectWithTag ("Fill").GetComponent<Image> ();
+			knifeFillImage.color = new Color (1, 0, 0, 1);
+			knifeFillImage.fillAmount = 0;
+			canThrow = false;
+			knifeTimer = 0;
 		}
-        audio = GetComponent<AudioSource>();
 		ns = GetComponent<NetworkSync> ();
-		knifeFillImage.color = new Color (1, 0, 0, 1);
-		knifeFillImage.fillAmount = 0;
-		canThrow = false;
-		knifeTimer = 0;
+        audio = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame

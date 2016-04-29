@@ -42,10 +42,12 @@ public class KnifeThrow : MonoBehaviour {
 			}
 		}
 	}
-	void onCollisionEnter(Collider o)
+	void OnControllerColliderHit(ControllerColliderHit o)
 	{
-		if (o.tag == "Player") {
-			o.GetComponent<PlayerMult>().Respawn();
+		Debug.Log (o.gameObject.tag);
+		if (o.gameObject.tag == "Player") {
+			o.gameObject.GetComponent<PlayerMult>().Respawn();
+			PhotonNetwork.Destroy(gameObject); 
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class NetworkManager : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PhotonNetwork.autoJoinLobby = false;
-		PhotonNetwork.logLevel = PhotonLogLevel.Full;
+		//PhotonNetwork.logLevel = PhotonLogLevel.Full;
 	}
 	
 	// Update is called once per frame
