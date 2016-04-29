@@ -9,6 +9,7 @@ public class KnifeThrow : MonoBehaviour {
     [SerializeField]
     public CharacterController charControl;
     private Vector3 vel;
+	private bool collided = false;
 	// Use this for initialization
 	void Start () {}
 	public void Setup(GameObject shooter)
@@ -21,21 +22,24 @@ public class KnifeThrow : MonoBehaviour {
 	void Update () 
 	{
 		lifespan -= Time.deltaTime;
-		if(lifespan <= 0)
+		if(lifespan <= 0 && GetComponent<PhotonView>().isMine)
 		{
-			Destroy(gameObject); 
+			PhotonNetwork.Destroy(gameObject); 
 		}
 		else
 		{
-			charControl.Move(vel * Time.deltaTime);
-            if(charControl.collisionFlags != CollisionFlags.None)
-            {
-                //Embed self in object, stop moving.
-                transform.position += transform.forward*0.1f;
-                vel = Vector3.zero;
+			if (!collided) 
+			{
+				charControl.Move (vel * Time.deltaTime);
+				if (charControl.collisionFlags != CollisionFlags.None) {	
+					collided = true;
+					//Embed self in object, stop moving.
+					transform.position += transform.forward * 0.1f;
+					vel = Vector3.zero;
 
-                //TODO: If object is player, delete self immediately (alternatively: "fall to floor" by setting z-pos to something >=1)
-            }
+					//TODO: If object is player, delete self immediately (alternatively: "fall to floor" by setting z-pos to something >=1)
+				}
+			}
 		}
 	}
 }

@@ -15,10 +15,15 @@ public class WindEmitter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		windManager = GameObject.Find ("Manager").GetComponent<WindManager> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if( PhotonNetwork.isMasterClient == false )
+		{
+			return;
+		}
 
         if ((hasLimit && limit > 0)||!hasLimit)
         {
@@ -34,7 +39,7 @@ public class WindEmitter : MonoBehaviour {
                     transform.position.y + Random.Range(-spread / 2, spread / 2),
                     transform.position.z);
 
-                windManager.wind.Add((GameObject)GameObject.Instantiate(windParticle, newPosition, transform.rotation));
+				windManager.wind.Add((GameObject)PhotonNetwork.Instantiate(windParticle.name, newPosition, transform.rotation, 0));
             }
         }
 	}

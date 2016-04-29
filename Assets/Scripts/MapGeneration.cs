@@ -10,13 +10,14 @@ public class MapGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         windManager = GetComponent<WindManager>();
-        CreateMap();
+        //CreateMap();
 	}
 
     public void CreateMap() {
         for (int b = 0; b < 20; b++) { 
-
-            windManager.windResistors.Add((GameObject)GameObject.Instantiate(blockPiece, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity));
+			GameObject g = PhotonNetwork.Instantiate(blockPiece.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
+			g.GetComponent<Rigidbody>().MovePosition(g.transform.position);
+			windManager.windResistors.Add(g);
         }
     }
 
