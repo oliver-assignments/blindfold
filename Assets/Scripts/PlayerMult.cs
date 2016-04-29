@@ -34,6 +34,10 @@ public class PlayerMult : MonoBehaviour
 		}
         audio = GetComponent<AudioSource>();
 		ns = GetComponent<NetworkSync> ();
+		knifeFillImage.color = new Color (1, 0, 0, 1);
+		knifeFillImage.fillAmount = 0;
+		canThrow = false;
+		knifeTimer = 0;
     }
 	
 	// Update is called once per frame
@@ -73,7 +77,7 @@ public class PlayerMult : MonoBehaviour
 			//Moving player and then camera
 			GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
 			transform.position = GetComponent<Rigidbody> ().position;
-			cameraTransform.position = transform.position + new Vector3 (0, 0, -10);
+			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
 		else 
 		{
@@ -143,4 +147,13 @@ public class PlayerMult : MonoBehaviour
                 break;
         }
     }
+	public void Respawn()
+	{
+		transform.position = Vector3.zero;
+		GetComponent<Rigidbody> ().position = transform.position;
+		knifeFillImage.color = new Color (1, 0, 0, 1);
+		knifeFillImage.fillAmount = 0;
+		canThrow = false;
+		knifeTimer = 0;
+	}
 }
