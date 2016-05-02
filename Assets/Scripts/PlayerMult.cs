@@ -36,6 +36,10 @@ public class PlayerMult : MonoBehaviour
 			canThrow = false;
 			knifeTimer = 0;
 		}
+        else
+        {
+            Destroy(gameObject.GetComponent<AudioListener>());
+        }
 		ns = GetComponent<NetworkSync> ();
         audio = GetComponent<AudioSource>();
     }
@@ -151,9 +155,12 @@ public class PlayerMult : MonoBehaviour
 	{
 		transform.position = Vector3.zero;
 		GetComponent<Rigidbody> ().position = transform.position;
-		knifeFillImage.color = new Color (1, 0, 0, 1);
-		knifeFillImage.fillAmount = 0;
-		canThrow = false;
-		knifeTimer = 0;
+        if (playerPV.isMine)
+        {
+            knifeFillImage.color = new Color(1, 0, 0, 1);
+            knifeFillImage.fillAmount = 0;
+            canThrow = false;
+            knifeTimer = 0;
+        }
 	}
 }
