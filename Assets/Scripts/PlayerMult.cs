@@ -76,11 +76,13 @@ public class PlayerMult : MonoBehaviour
 				}
 			}
 
-			//Keeping player at a z-pos of 0
-	
-			//Moving player and then camera
-			GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
-			transform.position = GetComponent<Rigidbody> ().position;
+            //Keeping player at a z-pos of 0
+
+            //Moving player and then camera
+            //GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
+            GetComponent<Rigidbody>().velocity = velocity;
+            transform.position = GetComponent<Rigidbody> ().position;
+            //Debug.Log(GetComponent<Rigidbody>().velocity);
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
 		else 
