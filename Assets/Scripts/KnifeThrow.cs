@@ -8,7 +8,7 @@ public class KnifeThrow : MonoBehaviour {
 	private float speed = 3;
     [SerializeField]
     public CharacterController charControl;
-    private Vector3 vel;
+    private Vector2 vel;
 	// Use this for initialization
 	void Start () {}
 	public void Setup(GameObject shooter)
@@ -32,7 +32,7 @@ public class KnifeThrow : MonoBehaviour {
             {
                 //Embed self in object, stop moving.
                 transform.position += transform.forward*0.1f;
-                vel = Vector3.zero;
+                vel = Vector2.zero;
 
                 //TODO: If object is player, delete self immediately (alternatively: "fall to floor" by setting z-pos to something >=1)
             }

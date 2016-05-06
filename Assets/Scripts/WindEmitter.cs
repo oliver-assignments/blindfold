@@ -29,12 +29,12 @@ public class WindEmitter : MonoBehaviour {
 
                 limit--;
 
-                Vector3 newPosition = new Vector3(
+                Vector2 newPosition = new Vector2(
                     transform.position.x + Random.Range(-spread / 2, spread / 2),
-                    transform.position.y + Random.Range(-spread / 2, spread / 2),
-                    transform.position.z);
+                    transform.position.y + Random.Range(-spread / 2, spread / 2));
 
-                WindManager.Instance.wind.Add((GameObject)GameObject.Instantiate(windParticle, newPosition, transform.rotation));
+                GameObject wind = (GameObject) GameObject.Instantiate(windParticle, newPosition, transform.rotation);
+                WindManager.Instance.wind.Add(wind.GetComponent<Rigidbody2D>());
             }
         }
 	}

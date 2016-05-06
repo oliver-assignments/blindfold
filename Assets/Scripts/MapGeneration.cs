@@ -11,10 +11,7 @@ public class MapGeneration : MonoBehaviour {
 	}
 
     public void CreateMap() {
-        for (int b = 0; b < 20; b++) { 
-
-            WindManager.Instance.windResistors.Add((GameObject)GameObject.Instantiate(blockPiece, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity));
-        }
+        
     }
 
 	// Update is called once per frame

@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Transform cameraTransform;
     [SerializeField]
     private CharacterController charControl;
-    private Vector3 velocity;
+    private Vector2 velocity;
 
 	private float scale = 2.5f;
 	private Vector2 movement;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        velocity = Vector3.zero;
+        velocity = Vector2.zero;
 
         WindManager.Instance.windResistors.Add(gameObject);
 
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        Vector3 mouseDir = new Vector3(Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f, 0);
+        Vector2 mouseDir = new Vector2(Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f);
         transform.forward = mouseDir;
         
         InputMovement();
@@ -70,8 +70,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        //Keeping player at a z-pos of 0
-        velocity.z = -1 * transform.position.z;
+       
 
         //Moving player and then camera
         charControl.Move(velocity * Time.deltaTime);
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
 		
 		//following code used to make player character face mouse
 		Vector2 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition);       //Mouse position
-		Vector3 objpos = Camera.main.WorldToViewportPoint(transform.position);        //Object position on screen
+		Vector2 objpos = Camera.main.WorldToViewportPoint(transform.position);        //Object position on screen
 		Vector2 relobjpos = new Vector2(objpos.x - 0.5f, objpos.y - 0.5f);            //Set coordinates relative to object's center
 		Vector2 relmousepos = new Vector2(mouse.x - 0.5f, mouse.y - 0.5f) - relobjpos;//Mouse cursor relative to object's center
 		float angle = Vector2.Angle(Vector2.up, relmousepos);                         //Angle calculation
@@ -111,7 +110,7 @@ public class Player : MonoBehaviour
 		*/
 
 		transform.rotation = Quaternion.Euler(0, 0, angle);
-		velocity = new Vector3(movement.x, movement.y, 0);
+		velocity = new Vector2(movement.x, movement.y);
 		//GetComponent<Rigidbody2D>().rotation = angle;
 
 	}
