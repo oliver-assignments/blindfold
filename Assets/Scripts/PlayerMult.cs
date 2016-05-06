@@ -37,6 +37,10 @@ public class PlayerMult : MonoBehaviour
 			knifeTimer = 0;
 			GetComponent<AudioListener> ().enabled = true;
 		}
+        else
+        {
+            Destroy(gameObject.GetComponent<AudioListener>());
+        }
 		ns = GetComponent<NetworkSync> ();
         audio = GetComponent<AudioSource>();
     }
@@ -73,11 +77,13 @@ public class PlayerMult : MonoBehaviour
 				}
 			}
 
-			//Keeping player at a z-pos of 0
-	
-			//Moving player and then camera
-			GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
-			transform.position = GetComponent<Rigidbody> ().position;
+            //Keeping player at a z-pos of 0
+
+            //Moving player and then camera
+            //GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
+            GetComponent<Rigidbody>().velocity = velocity;
+            transform.position = GetComponent<Rigidbody> ().position;
+            //Debug.Log(GetComponent<Rigidbody>().velocity);
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
 		else 
@@ -153,9 +159,12 @@ public class PlayerMult : MonoBehaviour
 	{
 		transform.position = Vector3.zero;
 		GetComponent<Rigidbody> ().position = transform.position;
-		knifeFillImage.color = new Color (1, 0, 0, 1);
-		knifeFillImage.fillAmount = 0;
-		canThrow = false;
-		knifeTimer = 0;
+        if (playerPV.isMine)
+        {
+            knifeFillImage.color = new Color(1, 0, 0, 1);
+            knifeFillImage.fillAmount = 0;
+            canThrow = false;
+            knifeTimer = 0;
+        }
 	}
 }
