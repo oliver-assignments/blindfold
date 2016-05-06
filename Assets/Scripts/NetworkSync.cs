@@ -12,8 +12,14 @@ public class NetworkSync : Photon.MonoBehaviour {
 	[HideInInspector] public Vector3 syncEndPosition;
 	// Use this for initialization
 	void Start () {
-		PhotonNetwork.sendRate = 30;
-		PhotonNetwork.sendRateOnSerialize = 15;
+		if (GetComponent<Player> ()) {
+			PhotonNetwork.sendRate = 30;
+			PhotonNetwork.sendRateOnSerialize = 30;
+		}
+		if (GetComponent<Wind> ()) {
+			PhotonNetwork.sendRate = 15;
+			PhotonNetwork.sendRateOnSerialize = 15;
+		}
 	}
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 		if (stream.isWriting) {
@@ -30,7 +36,7 @@ public class NetworkSync : Photon.MonoBehaviour {
 			//Network player, receive data
 			Vector3 syncPosition = (Vector3)stream.ReceiveNext();
 			Vector3 syncVelocity = (Vector3)stream.ReceiveNext();
-
+			Debug.Log ("INCOMING");
 			syncTime = 0f;
 			syncDelay = Time.time - lastSynchronizationTime;
 			lastSynchronizationTime = Time.time;

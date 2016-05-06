@@ -35,6 +35,7 @@ public class PlayerMult : MonoBehaviour
 			knifeFillImage.fillAmount = 0;
 			canThrow = false;
 			knifeTimer = 0;
+			GetComponent<AudioListener> ().enabled = true;
 		}
 		ns = GetComponent<NetworkSync> ();
         audio = GetComponent<AudioSource>();
@@ -147,6 +148,7 @@ public class PlayerMult : MonoBehaviour
                 break;
         }
     }
+	[PunRPC]
 	public void Respawn()
 	{
 		transform.position = Vector3.zero;

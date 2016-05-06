@@ -17,6 +17,7 @@ public class KnifeThrow : MonoBehaviour {
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
 		vel = transform.forward * speed;
+		GetComponent<PhotonView> ().RPC ("SetKnife", PhotonTargets.Others, vel, transform.position, transform.rotation);
 	}
 	// Update is called once per frame
 	void Update () 
@@ -46,8 +47,16 @@ public class KnifeThrow : MonoBehaviour {
 	{
 		Debug.Log (o.gameObject.tag);
 		if (o.gameObject.tag == "Player") {
-			o.gameObject.GetComponent<PlayerMult>().Respawn();
-			PhotonNetwork.Destroy(gameObject); 
+			o.gameObject.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
+			if(GetComponent<PhotonView>().isMine)
+				PhotonNetwork.Destroy(gameObject); 
 		}
+	}
+	[PunRPC]
+	void SetKnife(Vector3 vel, Vector3 pos, Quaternion rot)
+	{
+		transform.position = pos;
+		this.vel = vel;
+		transform.rotation = rot;
 	}
 }
