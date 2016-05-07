@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class WindManager : Singleton<WindManager>
 {
     public List<Rigidbody2D> wind = new List<Rigidbody2D>();
-    public List<GameObject> windResistors = new List<GameObject>();
 
     public float maxWindDistance = 1;
     public float windSpacingForce =1;

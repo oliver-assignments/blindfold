@@ -6,10 +6,11 @@ public class Player : MonoBehaviour
 {
     public Transform cameraTransform;
     [SerializeField]
-    private CharacterController charControl;
+    //private CharacterController charControl;
     private Vector2 velocity;
 
 	private float scale = 2.5f;
+    public float moveSpeed = 100;
 	private Vector2 movement;
 
 	[SerializeField]
@@ -28,8 +29,6 @@ public class Player : MonoBehaviour
     {
         velocity = Vector2.zero;
 
-        WindManager.Instance.windResistors.Add(gameObject);
-
         audio = GetComponent<AudioSource>();
     }
 	
@@ -40,6 +39,41 @@ public class Player : MonoBehaviour
         transform.forward = mouseDir;
         
         InputMovement();
+        var w = Input.GetKey("w");
+        var d = Input.GetKey("d");
+        var s = Input.GetKey("s");
+        var a = Input.GetKey("a");
+
+        if (!(w && s))
+        {
+            if (w)
+            {
+                velocity = new Vector2(velocity.x, 1 * moveSpeed);
+            }
+            if (s)
+            {
+                velocity = new Vector2(velocity.x, -1 * moveSpeed);
+            }
+        }
+        if (!w && !s)
+        {
+            velocity = new Vector2(velocity.x, 0) * moveSpeed;
+        }
+        if (!(a && d))
+        {
+            if (a)
+            {
+                velocity = new Vector2(-1 * moveSpeed, velocity.y);
+            }
+            if (d)
+            {
+                velocity = new Vector2(1 * moveSpeed, velocity.y);
+            }
+        }
+        if (!a && !d)
+        {
+            velocity = new Vector2(0, velocity.y);
+        }
 
         if (canThrow)
         {
@@ -70,11 +104,11 @@ public class Player : MonoBehaviour
             }
         }
 
-       
+
 
         //Moving player and then camera
-        charControl.Move(velocity * Time.deltaTime);
-        cameraTransform.position = transform.position+new Vector3(0, 0, -10);
+        transform.position += (Vector3)(velocity * Time.deltaTime);
+        cameraTransform.position = transform.position+new Vector3(0, 0, -30);
     }
 
 	private void InputMovement()
@@ -110,7 +144,7 @@ public class Player : MonoBehaviour
 		*/
 
 		transform.rotation = Quaternion.Euler(0, 0, angle);
-		velocity = new Vector2(movement.x, movement.y);
+		//velocity = new Vector2(movement.x, movement.y);
 		//GetComponent<Rigidbody2D>().rotation = angle;
 
 	}
