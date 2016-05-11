@@ -7,7 +7,6 @@ public class KnifeThrow : MonoBehaviour {
     [SerializeField]
 	private float speed = 3;
     [SerializeField]
-    public CharacterController charControl;
     private Vector3 vel;
 	private bool collided = false;
 	// Use this for initialization
@@ -17,6 +16,8 @@ public class KnifeThrow : MonoBehaviour {
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
 		vel = transform.forward * speed;
+		Debug.Log(transform.position);
+		GetComponent<Rigidbody2D>().velocity = vel;
 		GetComponent<PhotonView> ().RPC ("SetKnife", PhotonTargets.Others, vel, transform.position, transform.rotation);
 	}
 	// Update is called once per frame
@@ -27,23 +28,8 @@ public class KnifeThrow : MonoBehaviour {
 		{
 			PhotonNetwork.Destroy(gameObject); 
 		}
-		else
-		{
-			if (!collided) 
-			{
-				charControl.Move (vel * Time.deltaTime);
-				if (charControl.collisionFlags != CollisionFlags.None) {	
-					collided = true;
-					//Embed self in object, stop moving.
-					transform.position += transform.forward * 0.1f;
-					vel = Vector3.zero;
-
-					//TODO: If object is player, delete self immediately (alternatively: "fall to floor" by setting z-pos to something >=1)
-				}
-			}
-		}
 	}
-	void OnControllerColliderHit(ControllerColliderHit o)
+	void OnCollisionEnter2D(Collision2D o)
 	{
 		Debug.Log (o.gameObject.tag);
 		if (o.gameObject.tag == "Player") {
@@ -51,6 +37,11 @@ public class KnifeThrow : MonoBehaviour {
 			if(GetComponent<PhotonView>().isMine)
 				PhotonNetwork.Destroy(gameObject); 
 		}
+		collided = true;
+		//Embed self in object, stop moving.
+		transform.position += transform.forward * 0.1f;
+		vel = Vector3.zero;
+		GetComponent<Rigidbody2D>().constraints = RigidbodsasyConstraints2D.FreezeAll;
 	}
 	[PunRPC]
 	void SetKnife(Vector3 vel, Vector3 pos, Quaternion rot)

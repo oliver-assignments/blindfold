@@ -16,7 +16,7 @@ public class MapGeneration : MonoBehaviour {
     public void CreateMap() {
         for (int b = 0; b < 20; b++) { 
 			GameObject g = PhotonNetwork.Instantiate(blockPiece.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
-			g.GetComponent<Rigidbody>().MovePosition(g.transform.position);
+			g.GetComponent<Rigidbody2D>().MovePosition(g.transform.position);
 			windManager.windResistors.Add(g);
         }
     }

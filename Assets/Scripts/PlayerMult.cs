@@ -44,13 +44,12 @@ public class PlayerMult : MonoBehaviour
 		ns = GetComponent<NetworkSync> ();
         audio = GetComponent<AudioSource>();
     }
-	
 	// Update is called once per frame
 	void Update ()
     {
 		if (playerPV.isMine) {
-			GetComponent<Rigidbody> ().velocity = Vector3.zero;
-			Vector3 mouseDir = new Vector3 (Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f, 0);
+			GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+			Vector2 mouseDir = new Vector2 (Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f);
 			transform.forward = mouseDir;
 	        
 			InputMovement ();
@@ -60,7 +59,7 @@ public class PlayerMult : MonoBehaviour
 					canThrow = false;
 	
 					//  Throw knife
-					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.position + Vector3.forward, transform.rotation, 0);
+					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.position + transform.forward, transform.rotation, 0);
 					g.GetComponent<KnifeThrow> ().Setup (this.gameObject);
 					knifeFillImage.color = new Color (1, 0, 0, 1);
 					knifeFillImage.fillAmount = 0;
@@ -81,8 +80,8 @@ public class PlayerMult : MonoBehaviour
 
             //Moving player and then camera
             //GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
-            GetComponent<Rigidbody>().velocity = velocity;
-            transform.position = GetComponent<Rigidbody> ().position;
+            GetComponent<Rigidbody2D>().velocity = velocity;
+            transform.position = GetComponent<Rigidbody2D> ().position;
             //Debug.Log(GetComponent<Rigidbody>().velocity);
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
@@ -109,7 +108,7 @@ public class PlayerMult : MonoBehaviour
 		float camDis = cameraTransform.position.y - this.transform.position.y;
 
 		// Get the mouse position in world space. Using camDis for the Z axis.
-		Vector3 mouse = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, camDis));
+		Vector2 mouse = Camera.main.ScreenToWorldPoint (new Vector2 (Input.mousePosition.x, Input.mousePosition.y));
 
 		float AngleRad = Mathf.Atan2 (mouse.y - transform.position.y, mouse.x - transform.position.x);
 		float angle = (180 / Mathf.PI) * AngleRad - 90;
@@ -127,7 +126,7 @@ public class PlayerMult : MonoBehaviour
 		*/
 
 		transform.rotation = Quaternion.Euler(0, 0, angle);
-		velocity = new Vector3(movement.x, movement.y, 0);
+		velocity = new Vector2(movement.x, movement.y);
 		//GetComponent<Rigidbody2D>().rotation = angle;
 
 	}
@@ -135,8 +134,8 @@ public class PlayerMult : MonoBehaviour
 	private void SyncedMovement()
 	{
 		ns.syncTime += Time.deltaTime;
-		GetComponent<Rigidbody>().position = Vector3.Lerp(ns.syncStartPosition, ns.syncEndPosition, ns.syncTime / ns.syncDelay);
-		transform.position = GetComponent<Rigidbody> ().position;
+		GetComponent<Rigidbody2D>().position = Vector2.Lerp(ns.syncStartPosition, ns.syncEndPosition, ns.syncTime / ns.syncDelay);
+		transform.position = GetComponent<Rigidbody2D> ().position;
 	}
 	void OnTriggerEnter2D(Collider2D other)
     {
@@ -154,11 +153,15 @@ public class PlayerMult : MonoBehaviour
                 break;
         }
     }
+	void OnCollisionEnter2D(Collision2D o)
+	{
+		Debug.Log(o);
+	}
 	[PunRPC]
 	public void Respawn()
 	{
 		transform.position = Vector3.zero;
-		GetComponent<Rigidbody> ().position = transform.position;
+		GetComponent<Rigidbody2D> ().position = transform.position;
         if (playerPV.isMine)
         {
             knifeFillImage.color = new Color(1, 0, 0, 1);
