@@ -4,19 +4,17 @@ using System.Collections;
 public class WindEmitter : MonoBehaviour {
 
     public GameObject windParticle;
-    public WindManager windManager;
-    public float spread;
+    
+    public float spread =1;
 
-    public float cooldown;
+    public float cooldown = 0.5f;
     private float timer = 0;
 
     public bool hasLimit = false;
     public float limit = 10;
 
 	// Use this for initialization
-	void Start () {
-		windManager = GameObject.Find ("Manager").GetComponent<WindManager> ();
-	}
+	void Start () {}
 	
 	// Update is called once per frame
 	void Update () {
@@ -39,8 +37,9 @@ public class WindEmitter : MonoBehaviour {
                     transform.position.y + Random.Range(-spread / 2, spread / 2),
                     transform.position.z);
 
-				windManager.wind.Add((GameObject)PhotonNetwork.Instantiate(windParticle.name, newPosition, transform.rotation, 0));
-            }
+				GameObject wind = (GameObject) PhotonNetwork.Instantiate(windParticle.name, newPosition, transform.rotation, 0);
+				WindManager.Instance.wind.Add(wind.GetComponent<Rigidbody2D>());
+			}
         }
 	}
 }

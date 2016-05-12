@@ -16,7 +16,8 @@ public class NetworkSync : Photon.MonoBehaviour {
 			PhotonNetwork.sendRate = 30;
 			PhotonNetwork.sendRateOnSerialize = 30;
 		}
-		if (GetComponent<Wind> ()) {
+		//if (GetComponent<Wind> ()) {
+		else {
 			PhotonNetwork.sendRate = 15;
 			PhotonNetwork.sendRateOnSerialize = 15;
 		}
@@ -27,8 +28,8 @@ public class NetworkSync : Photon.MonoBehaviour {
 			stream.SendNext(transform.position);
 			if(GetComponent<Player>())
 				stream.SendNext(GetComponent<PlayerMult>().velocity);
-			else if(GetComponent<Wind>())
-				stream.SendNext(GetComponent<Wind>().velocity);
+//			else if(GetComponent<Wind>())
+//				stream.SendNext(GetComponent<Wind>().velocity);
 			else
 				stream.SendNext(Vector3.zero);
 		}

@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class WindManager : MonoBehaviour
+public class WindManager : Singleton<WindManager>
 {
-    public List<GameObject> wind = new List<GameObject>();
-    public List<GameObject> windResistors = new List<GameObject>();
+    public List<Rigidbody2D> wind = new List<Rigidbody2D>();
 
-    public float maxWindDistance;
-    public float windSpacingForce;
+    public float maxWindDistance = 1;
+    public float windSpacingForce =1;
     
-    public float windResistForce;
+    public float windResistForce =1;
     public float wrapDistanceFromOrigin = 1;
 
     
@@ -22,74 +21,19 @@ public class WindManager : MonoBehaviour
     public float breezeRotationSpeed = 1;
     public float breezeBackAndForthSpeed = 1;
 
+    public bool intraWindCollisions = true;
+
     // Update is called once per frame
     void Update()
     {
         if (breeze) { Breeze(); }  //  Breeze
 
-        for (int w = 0; w < wind.Count; w++)
+        for (int q = 0; q < wind.Count; q++)
         {
-            Transform wT = wind[w].GetComponent<Transform>();
-            Wind wW = wind[w].GetComponent<Wind>();
-
-            for (int q = w+1; q < wind.Count; q++)
-            {
-                Transform qT = wind[q].GetComponent<Transform>();
-                Wind qW = wind[q].GetComponent<Wind>();
-
-                float distance = Vector3.Distance(wT.position, qT.position);
-
-                if (distance < maxWindDistance)
-                {
-                    float ratio = 1 - (distance / maxWindDistance);
-
-                    //  At a distance of 0, we apply the max force, at a distance of maxWindDistance, we apply 0 force
-                    //  This would mean at a ratio of 0.5 we have 0.5 max force, its linear.
-                    float force = (windSpacingForce * ratio) / qW.mass;
-
-                    //  Since each object looks at all others, we only worry about apply the force to OTHER object nto ourselves
-                    Vector3 directionToOther = Vector3.Normalize(qT.position - wT.position);
-
-                    Vector3 acceleration = directionToOther * force;
-
-                    //  Apply the force to the other
-                    qW.velocity += acceleration;
-                    wW.velocity += -1*acceleration;
-                }
-            }
-
-            //  The wind collisiosn with real objects
-            for (int r = 0; r < windResistors.Count; r++)
-            {
-                Transform rT = windResistors[r].GetComponent<Transform>();
-                WindResistor rWR = windResistors[r].GetComponent<WindResistor>();
-
-                float distance = Vector3.Distance(wT.position, rT.position);
-
-                if (distance < rWR.windResistDistance)
-                {
-                    // Wind wW = wind[w].GetComponent<Wind>();
-
-                    float ratio = 1 - (distance / maxWindDistance) / wW.mass;
-
-                    //  At a distance of 0, we apply the max force, at a distance of maxWindDistance, we apply 0 force
-                    //  This would mean at a ratio of 0.5 we have 0.5 max force, its linear.
-                    float force = (windResistForce * ratio);
-
-                    //  Since each object looks at all others, we only worry about apply the force to OTHER object nto ourselves
-                    Vector3 directionFromOtherToSelf = Vector3.Normalize(wT.position - rT.position);
-
-                    Vector3 acceleration = directionFromOtherToSelf * force;
-
-                    //  Apply the force to the other
-                    wW.velocity += acceleration;
-                }
-            }
-
-            if (wT.position.x > wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x - (wrapDistanceFromOrigin * 2), wT.position.y, wT.position.z);
-            if (wT.position.x < -wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x + (wrapDistanceFromOrigin * 2), wT.position.y, wT.position.z);
-            if (wT.position.y > wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x, wT.position.y - (wrapDistanceFromOrigin * 2), wT.position.z);
-            if (wT.position.y < -wrapDistanceFromOrigin) wT.position = new Vector3(wT.position.x, wT.position.y + (wrapDistanceFromOrigin * 2), wT.position.z);
+            if (wind[q].position.x > wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x - (wrapDistanceFromOrigin * 2), wind[q].position.y);
+            if (wind[q].position.x < -wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x + (wrapDistanceFromOrigin * 2), wind[q].position.y);
+            if (wind[q].position.y > wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y - (wrapDistanceFromOrigin * 2));
+            if (wind[q].position.y < -wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y + (wrapDistanceFromOrigin * 2));
         }
     }
     void Breeze()
@@ -102,12 +46,9 @@ public class WindManager : MonoBehaviour
 
         for (int q = 0; q < wind.Count; q++)
         {
-            Wind qW = wind[q].GetComponent<Wind>();
-
-            qW.velocity = new Vector3(
-                    qW.velocity.x + ((Mathf.Cos(windDirection) * windSpeed) / qW.mass),
-                    qW.velocity.y + ((Mathf.Sin(windDirection) * windSpeed) / qW.mass),
-                    qW.velocity.z);
+            wind[q].velocity = new Vector2(
+                    wind[q].velocity.x + ((Mathf.Cos(windDirection) * windSpeed) / wind[q].mass),
+                    wind[q].velocity.y + ((Mathf.Sin(windDirection) * windSpeed) / wind[q].mass));
         }
     }
 }
