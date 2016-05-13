@@ -23,6 +23,11 @@ public class WindManager : Singleton<WindManager>
 
     public bool intraWindCollisions = true;
 
+    public AudioSource ambientWindSource;
+    public float maxWindVolume = 1f;
+    public float minWindVolume = 0.25f;
+
+
     // Update is called once per frame
     void Update()
     {
@@ -40,7 +45,9 @@ public class WindManager : Singleton<WindManager>
     {
         windDirection += breezeRotationSpeed * Time.deltaTime;
 
-        //  Wind speed oscillates from -max to +max
+        //  Wind speed oscillates from -max to +max 
+        ambientWindSource.volume = minWindVolume + (Mathf.Abs(Mathf.Sin(windPhase))*(maxWindVolume-minWindVolume));
+
         windPhase += breezeBackAndForthSpeed * Time.deltaTime;
         float windSpeed = Mathf.Sin(windPhase) * breezeForce;
 
