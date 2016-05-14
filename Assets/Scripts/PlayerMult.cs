@@ -17,6 +17,7 @@ public class PlayerMult : MonoBehaviour
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
+	public float percentageOfMaxSpeedToStep;
 	
     public AudioSource knifeRegain;
 	public AudioSource grassWalking;
@@ -85,7 +86,7 @@ public class PlayerMult : MonoBehaviour
 
             //Moving player and then camera
 			Debug.Log (velocity.magnitude);
-			if(velocity.magnitude > 0.9*scale)
+			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
 			{
 				if(!grassWalking.isPlaying)
 				{
