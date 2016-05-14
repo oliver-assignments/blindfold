@@ -37,12 +37,7 @@ public class PlayerMult : MonoBehaviour
 			knifeFillImage.fillAmount = 0;
 			canThrow = false;
 			knifeTimer = 0;
-			GetComponent<AudioListener> ().enabled = true;
 		}
-        else
-        {
-            Destroy(gameObject.GetComponent<AudioListener>());
-        }
 		ns = GetComponent<NetworkSync> ();
     }
 	// Update is called once per frame
@@ -87,7 +82,7 @@ public class PlayerMult : MonoBehaviour
             //Keeping player at a z-pos of 0
 
             //Moving player and then camera
-			Debug.Log (velocity.magnitude);
+			//Debug.Log (velocity.magnitude);
 			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
 			{
 				if(!grassWalking.isPlaying)
