@@ -59,7 +59,7 @@ public class PlayerMult : MonoBehaviour
                 if(respawnTimer <= 0)
                 {
                     respawnText.enabled = false;
-                    transform.position = Vector3.zero;  //or other spawn point
+                    transform.position = new Vector3(Random.Range(-14f, 14f), Random.Range(-8, 8), -1);
                     GetComponent<Rigidbody2D>().position = transform.position;
 
                     knifeRegain.Play(); //Or other respawn sound
