@@ -76,7 +76,7 @@ public class KnifeThrow : MonoBehaviour
         {
             collided = true;
             PhotonNetwork.Destroy(o.gameObject); //.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
-            PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.identity, 0);
+            PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360), 0);
             if (GetComponent<PhotonView>().isMine)
                 Kill(playerHitSound);
         }
