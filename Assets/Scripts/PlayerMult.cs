@@ -47,7 +47,9 @@ public class PlayerMult : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+
 		if (playerPV.isMine) {
+            Remaining();
 			GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 			Vector2 mouseDir = new Vector2 (Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f);
 			transform.forward = mouseDir;
@@ -153,10 +155,11 @@ public class PlayerMult : MonoBehaviour
                 break;
         }
     }
-	void OnCollisionEnter2D(Collision2D o)
-	{
-		Debug.Log(o);
-	}
+    void Remaining()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject.Find("Canvas/Players Remaining Label").GetComponent<Text>().text = "Players Remaining: " + players.Length;
+    }
 	[PunRPC]
 	public void Respawn()
 	{

@@ -9,6 +9,7 @@ public class KnifeThrow : MonoBehaviour {
 	[SerializeField]
 	private Vector3 vel;
 	private bool collided = false;
+	public GameObject killMarker;
 	// Use this for initialization
 	void Start () {}
 	public void Setup(GameObject shooter)
@@ -34,6 +35,7 @@ public class KnifeThrow : MonoBehaviour {
 		Debug.Log (o.gameObject.tag);
 		if (o.gameObject.tag == "Player") {
 			o.gameObject.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
+			PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.identity, 0);
 			if(GetComponent<PhotonView>().isMine)
 				PhotonNetwork.Destroy(gameObject); 
 		}
