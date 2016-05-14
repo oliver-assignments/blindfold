@@ -11,11 +11,15 @@ public class PlayerMult : MonoBehaviour
 	private Vector2 movement;
 	[SerializeField]
 	private PhotonView playerPV;
-	[SerializeField]
-	private GameObject knife;
+    [SerializeField]
+    private GameObject knife;
     private Image knifeFillImage;
     public float knifeCooldown;
     private float knifeTimer = 0;
+    [SerializeField]
+    private float secondsBeforeRespawn = 3;
+    private float respawnTimer = 0;
+    private Text respawnText;
     private bool canThrow = true;
 	public float percentageOfMaxSpeedToStep;
 	
@@ -31,6 +35,7 @@ public class PlayerMult : MonoBehaviour
 
         velocity = Vector3.zero;
 		if (playerPV.isMine) {
+            respawnText = GameObject.Find("Canvas/Respawn").GetComponent<Text>();
 			cameraTransform = Camera.main.transform;
 			knifeFillImage = GameObject.FindGameObjectWithTag ("Fill").GetComponent<Image> ();
 			knifeFillImage.color = new Color (1, 0, 0, 1);
@@ -47,6 +52,27 @@ public class PlayerMult : MonoBehaviour
     {
 
 		if (playerPV.isMine) {
+            if(respawnTimer > 0)
+            {
+                respawnTimer -= Time.deltaTime;
+                respawnText.text = "RESPAWN IN: " + respawnTimer.ToString("F2");
+                if(respawnTimer <= 0)
+                {
+                    respawnText.enabled = false;
+                    transform.position = Vector3.zero;  //or other spawn point
+                    GetComponent<Rigidbody2D>().position = transform.position;
+
+                    knifeRegain.Play(); //Or other respawn sound
+                    knifeTimer = 0;
+                    canThrow = true;
+                    knifeFillImage.fillAmount = 1;
+                    knifeFillImage.color = new Color(0, 1, 0, 1);
+                }
+                else
+                {
+                    return;
+                }
+            }
             Remaining();
 			GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 			Vector2 mouseDir = new Vector2 (Input.mousePosition.x / Screen.width - 0.5f, Input.mousePosition.y / Screen.height - 0.5f);
@@ -71,11 +97,11 @@ public class PlayerMult : MonoBehaviour
                     {
                         knifeRegain.Play();
                     }
-					knifeTimer = 0;
-					canThrow = true;
-					knifeFillImage.fillAmount = 1;
-					knifeFillImage.color = new Color (0, 1, 0, 1);
-				} else {
+                    knifeTimer = 0;
+                    canThrow = true;
+                    knifeFillImage.fillAmount = 1;
+                    knifeFillImage.color = new Color(0, 1, 0, 1);
+                } else {
 					knifeTimer += Time.deltaTime;
 					knifeFillImage.fillAmount = knifeTimer / knifeCooldown;
 				}
@@ -197,10 +223,21 @@ public class PlayerMult : MonoBehaviour
 		GetComponent<Rigidbody2D> ().position = transform.position;
         if (playerPV.isMine)
         {
+            //Move player below field (read: Invisible and intangible)
+            transform.position += new Vector3(0, 0, -100);
+            GetComponent<Rigidbody2D>().position = transform.position;
+
+
+            //Disable knives
             knifeFillImage.color = new Color(1, 0, 0, 1);
             knifeFillImage.fillAmount = 0;
             canThrow = false;
             knifeTimer = 0;
+
+            //Set up respawn timer
+            respawnTimer = secondsBeforeRespawn;
+            respawnText.enabled = true;
+            respawnText.text = "RESPAWN IN: " + secondsBeforeRespawn;
         }
 	}
 }
