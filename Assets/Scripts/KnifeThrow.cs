@@ -16,7 +16,7 @@ public class KnifeThrow : MonoBehaviour
     public AudioClip playerHitSound;
     public AudioClip blockHitSound;
     public AudioSource audioSource;
-    private GameObject tosser;
+    private int id;
     private float soundTimer = 0;
     private float soundCooldown = 1;
     private bool expired = false;
@@ -37,11 +37,12 @@ public class KnifeThrow : MonoBehaviour
     }
     public void Setup(GameObject shooter)
     {
+        id = shooter.GetInstanceID();
         GetComponent<MeshRenderer>().enabled = true;
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
         vel = transform.forward * speed;
-        GetComponent<PhotonView>().RPC("SetKnife", PhotonTargets.Others, vel, transform.position);
+        GetComponent<PhotonView>().RPC("SetKnife", PhotonTargets.Others, vel, transform.position, id);
         Debug.Log(transform.position);
         GetComponent<Rigidbody2D>().velocity = vel;
     }
@@ -67,7 +68,7 @@ public class KnifeThrow : MonoBehaviour
                     PhotonNetwork.Destroy(gameObject);
                 }
             }
-            GetComponent<PhotonView>().RPC("SetKnife", PhotonTargets.Others, vel, transform.position);
+            GetComponent<PhotonView>().RPC("SetKnife", PhotonTargets.Others, vel, transform.position, id);
         }
     }
     void OnCollisionEnter2D(Collision2D o)
@@ -75,6 +76,10 @@ public class KnifeThrow : MonoBehaviour
         Debug.Log(o.gameObject.tag);
         if (o.gameObject.tag == "Player" && lifespan < 3.9)
         {
+            if(o.gameObject.GetInstanceID() == id)
+            {
+                return;
+            }
             collided = true;
             o.gameObject.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
             PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)), 0);
@@ -94,8 +99,9 @@ public class KnifeThrow : MonoBehaviour
         }
     }
     [PunRPC]
-    void SetKnife(Vector3 vel, Vector3 pos)
+    void SetKnife(Vector3 vel, Vector3 pos, int owner)
     {
+        id = owner;
         transform.position = pos;
         this.vel = vel;
     }
