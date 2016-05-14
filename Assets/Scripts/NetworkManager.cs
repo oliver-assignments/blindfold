@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class NetworkManager : Photon.MonoBehaviour {
+    public static string roomName = "ThisRoom";
 	public bool AutoConnect = true;
 	public byte Version = 0;
 
@@ -32,21 +33,21 @@ public class NetworkManager : Photon.MonoBehaviour {
 	{
 		Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinOrCreateRoom();");
 		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
-		PhotonNetwork.JoinOrCreateRoom("ThissRoom2", roomOptions, TypedLobby.Default);
+		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
 	public virtual void OnJoinedLobby()
 	{
 		Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinOrCreateRoom();");
 		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
-		PhotonNetwork.JoinOrCreateRoom("ThissRoom", roomOptions, TypedLobby.Default);
+		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
 	public virtual void OnPhotonRandomJoinFailed()
 	{
 		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
 		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
-		PhotonNetwork.JoinOrCreateRoom("ThissRoom", roomOptions, TypedLobby.Default);
+		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
 	// the following methods are implemented to give you some context. re-implement them as needed.
