@@ -16,10 +16,13 @@ public class PlayerMult : MonoBehaviour
     private Image knifeFillImage;
     public float knifeCooldown;
     private float knifeTimer = 0;
+
     [SerializeField]
     private float secondsBeforeRespawn = 3;
     private float respawnTimer = 0;
     private Text respawnText;
+
+    private int id;
     private bool canThrow = true;
 	public float percentageOfMaxSpeedToStep;
 	
@@ -85,7 +88,7 @@ public class PlayerMult : MonoBehaviour
 					canThrow = false;
 	
 					//  Throw knife
-					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.GetChild(1).position, transform.rotation, 0);
+					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.position + transform.forward, transform.rotation, 0);
 					g.GetComponent<KnifeThrow> ().Setup (this.gameObject);
 					knifeFillImage.color = new Color (1, 0, 0, 1);
 					knifeFillImage.fillAmount = 0;
@@ -240,4 +243,11 @@ public class PlayerMult : MonoBehaviour
             respawnText.text = "RESPAWN IN: " + secondsBeforeRespawn;
         }
 	}
+    [PunRPC]
+    public void SetID(int i)
+    {
+        id = i;
+        Debug.Log(id);
+    }
+    public int GetID() { return id; }
 }

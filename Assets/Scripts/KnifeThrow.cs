@@ -37,13 +37,13 @@ public class KnifeThrow : MonoBehaviour
     }
     public void Setup(GameObject shooter)
     {
-        id = shooter.GetInstanceID();
+        id = shooter.GetComponent<PlayerMult>().GetID();
+        Debug.Log(id);
         GetComponent<MeshRenderer>().enabled = true;
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
         vel = transform.forward * speed;
         GetComponent<PhotonView>().RPC("SetKnife", PhotonTargets.Others, vel, transform.position, id);
-        Debug.Log(transform.position);
         GetComponent<Rigidbody2D>().velocity = vel;
     }
     // Update is called once per frame
@@ -77,7 +77,7 @@ public class KnifeThrow : MonoBehaviour
         if (o.gameObject.tag == "Player" && lifespan < 3.9)
         {
             Debug.Log(id);
-            Debug.Log(o.gameObject.GetInstanceID());
+            Debug.Log(o.gameObject.GetComponent<PlayerMult>().GetID());
             if(o.gameObject.GetInstanceID() == id)
             {
                 return;

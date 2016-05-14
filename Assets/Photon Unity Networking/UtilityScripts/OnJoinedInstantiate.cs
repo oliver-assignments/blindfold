@@ -16,7 +16,15 @@ public class OnJoinedInstantiate : MonoBehaviour
             foreach (GameObject o in this.PrefabsToInstantiate)
             {
                 Debug.Log("Instantiating: " + o.name);
-				PhotonNetwork.Instantiate(o.name, new Vector3(Random.Range(-14,14),Random.Range(-8,8),-1), Quaternion.identity, 0);
+				
+
+                Debug.Log("Instantiating: " + o.name);
+				
+
+                int iDNum = GameObject.FindGameObjectsWithTag("Player").Length;
+				GameObject g = (GameObject)PhotonNetwork.Instantiate(o.name, new Vector3(Random.Range(-14, 14), Random.Range(-8, 8), -1), Quaternion.identity, 0);
+                g.GetComponent<PhotonView>().RPC("SetID", PhotonTargets.OthersBuffered, iDNum);
+                Debug.Log(iDNum);
             }
         }
 		if( PhotonNetwork.isMasterClient == false )
