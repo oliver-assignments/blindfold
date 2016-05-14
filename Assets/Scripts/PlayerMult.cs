@@ -193,7 +193,7 @@ public class PlayerMult : MonoBehaviour
 	[PunRPC]
 	public void Respawn()
 	{
-		transform.position = Vector3.zero;
+		transform.position = new Vector3(Random.Range(-7.5f,7.5f),Random.Range(-3,3),-1);
 		GetComponent<Rigidbody2D> ().position = transform.position;
         if (playerPV.isMine)
         {
