@@ -19,7 +19,7 @@ public class NetworkSync : Photon.MonoBehaviour {
 		if (stream.isWriting) {
 			//We own this player: send the others our data
 			stream.SendNext(transform.position);
-			if(GetComponent<PlayerMult>())
+			if(GetComponent<Player>())
 				stream.SendNext(GetComponent<PlayerMult>().velocity);
 //			else if(GetComponent<Wind>())
 //				stream.SendNext(GetComponent<Wind>().velocity);
