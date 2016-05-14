@@ -18,7 +18,7 @@ public class PlayerMult : MonoBehaviour
     private float knifeTimer = 0;
     private bool canThrow = true;
 
-    public AudioClip knifeThrowSound;
+    public AudioClip regainKnifeSound;
     private AudioSource audio;
 
 	//Sync
@@ -27,6 +27,7 @@ public class PlayerMult : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+
         velocity = Vector3.zero;
 		if (playerPV.isMine) {
 			cameraTransform = Camera.main.transform;
@@ -66,6 +67,11 @@ public class PlayerMult : MonoBehaviour
 				}
 			} else {
 				if (knifeTimer > knifeCooldown) {
+
+                    if (!audio.isPlaying)
+                    {
+                        audio.PlayOneShot(regainKnifeSound);
+                    }
 					knifeTimer = 0;
 					canThrow = true;
 					knifeFillImage.fillAmount = 1;
