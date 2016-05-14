@@ -11,6 +11,7 @@ public class OnJoinedInstantiate : MonoBehaviour
 
     public void OnJoinedRoom()
     {
+        Debug.Log("Present.");
         if (this.PrefabsToInstantiate != null)
         {
             foreach (GameObject o in this.PrefabsToInstantiate)
@@ -30,9 +31,9 @@ public class OnJoinedInstantiate : MonoBehaviour
 		{
 			return;
 		}
-		//GetComponent<MapGeneration> ().CreateMap ();
-		//PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
-		//PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
+		GetComponent<MapGeneration> ().CreateMap ();
+		PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
+		PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
 		//PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
 		//PhotonNetwork.Instantiate(MasterPrefab.name, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10),0), Quaternion.identity, 0);
     }
