@@ -17,9 +17,9 @@ public class PlayerMult : MonoBehaviour
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
-
-    public AudioClip regainKnifeSound;
-    private AudioSource audio;
+	
+    public AudioSource knifeRegain;
+	public AudioSource grassWalking;
 
 	//Sync
 	private NetworkSync ns;
@@ -43,7 +43,6 @@ public class PlayerMult : MonoBehaviour
             Destroy(gameObject.GetComponent<AudioListener>());
         }
 		ns = GetComponent<NetworkSync> ();
-        audio = GetComponent<AudioSource>();
     }
 	// Update is called once per frame
 	void Update ()
@@ -68,9 +67,9 @@ public class PlayerMult : MonoBehaviour
 			} else {
 				if (knifeTimer > knifeCooldown) {
 
-                    if (!audio.isPlaying)
+                    if (!knifeRegain.isPlaying)
                     {
-                        audio.PlayOneShot(regainKnifeSound);
+                        knifeRegain.Play();
                     }
 					knifeTimer = 0;
 					canThrow = true;
@@ -85,10 +84,20 @@ public class PlayerMult : MonoBehaviour
             //Keeping player at a z-pos of 0
 
             //Moving player and then camera
-            //GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
+			Debug.Log (velocity.magnitude);
+			if(velocity.magnitude > 0.9*scale)
+			{
+				if(!grassWalking.isPlaying)
+				{
+					grassWalking.Play();
+				}
+			}
+			else
+			{
+				grassWalking.Stop ();
+			}
             GetComponent<Rigidbody2D>().velocity = velocity;
             transform.position = GetComponent<Rigidbody2D> ().position;
-            //Debug.Log(GetComponent<Rigidbody>().velocity);
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
 		else 
