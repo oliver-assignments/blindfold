@@ -59,7 +59,7 @@ public class PlayerMult : MonoBehaviour
 					canThrow = false;
 	
 					//  Throw knife
-					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.position + transform.forward, transform.rotation, 0);
+					GameObject g = (GameObject)PhotonNetwork.Instantiate (knife.name, transform.GetChild(1).position, transform.rotation, 0);
 					g.GetComponent<KnifeThrow> ().Setup (this.gameObject);
 					knifeFillImage.color = new Color (1, 0, 0, 1);
 					knifeFillImage.fillAmount = 0;
@@ -106,10 +106,10 @@ public class PlayerMult : MonoBehaviour
 		{
 			SyncedMovement ();
             if (!GetComponent<PhotonView>().isMine)
-                Debug.Log(velocity.magnitude);
+                ///Debug.Log(velocity.magnitude);
             if (velocity.magnitude > percentageOfMaxSpeedToStep * scale)
             {
-                Debug.Log("step step");
+                //Debug.Log("step step");
                 if (!grassWalking.isPlaying)
                 {
                     grassWalking.Play();

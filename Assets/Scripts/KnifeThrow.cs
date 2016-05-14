@@ -76,6 +76,8 @@ public class KnifeThrow : MonoBehaviour
         Debug.Log(o.gameObject.tag);
         if (o.gameObject.tag == "Player" && lifespan < 3.9)
         {
+            Debug.Log(id);
+            Debug.Log(o.gameObject.GetInstanceID());
             if(o.gameObject.GetInstanceID() == id)
             {
                 return;
