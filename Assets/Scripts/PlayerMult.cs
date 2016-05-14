@@ -37,6 +37,8 @@ public class PlayerMult : MonoBehaviour
 			knifeFillImage.fillAmount = 0;
 			canThrow = false;
 			knifeTimer = 0;
+            GetComponent<MeshRenderer>().enabled = true;
+            transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true;
 		}
 		ns = GetComponent<NetworkSync> ();
     }
