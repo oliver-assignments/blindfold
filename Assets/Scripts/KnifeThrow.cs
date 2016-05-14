@@ -37,6 +37,7 @@ public class KnifeThrow : MonoBehaviour
     }
     public void Setup(GameObject shooter)
     {
+        GetComponent<MeshRenderer>().enabled = true;
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
         vel = transform.forward * speed;
@@ -71,8 +72,9 @@ public class KnifeThrow : MonoBehaviour
     void OnCollisionEnter2D(Collision2D o)
     {
         Debug.Log(o.gameObject.tag);
-        if (o.gameObject.tag == "Player")
+        if (o.gameObject.tag == "Player" && lifespan < 3.9)
         {
+            collided = true;
             PhotonNetwork.Destroy(o.gameObject); //.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
             PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.identity, 0);
             if (GetComponent<PhotonView>().isMine)

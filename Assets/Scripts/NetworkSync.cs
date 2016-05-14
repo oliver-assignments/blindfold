@@ -10,8 +10,9 @@ public class NetworkSync : Photon.MonoBehaviour {
 	[HideInInspector] public float lastSynchronizationTime;
 	[HideInInspector] public Vector3 syncStartPosition;
 	[HideInInspector] public Vector3 syncEndPosition;
-	// Use this for initialization
-	void Start () {
+    [HideInInspector] public Vector3 syncVelocity;
+    // Use this for initialization
+    void Start () {
 		PhotonNetwork.sendRate = 30;
 		PhotonNetwork.sendRateOnSerialize = 30;
 	}
@@ -29,7 +30,7 @@ public class NetworkSync : Photon.MonoBehaviour {
 		else {
 			//Network player, receive data
 			Vector3 syncPosition = (Vector3)stream.ReceiveNext();
-			Vector3 syncVelocity = (Vector3)stream.ReceiveNext();
+			syncVelocity = (Vector3)stream.ReceiveNext();
 			//Debug.Log ("INCOMING");
 			syncTime = 0f;
 			syncDelay = Time.time - lastSynchronizationTime;

@@ -84,9 +84,11 @@ public class PlayerMult : MonoBehaviour
             //Keeping player at a z-pos of 0
 
             //Moving player and then camera
-			//Debug.Log (velocity.magnitude);
+            if(!GetComponent<PhotonView>().isMine)
+			    Debug.Log (velocity.magnitude);
 			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
 			{
+                Debug.Log("step step");
 				if(!grassWalking.isPlaying)
 				{
 					grassWalking.Play();
@@ -103,7 +105,21 @@ public class PlayerMult : MonoBehaviour
 		else 
 		{
 			SyncedMovement ();
-		}
+            if (!GetComponent<PhotonView>().isMine)
+                Debug.Log(velocity.magnitude);
+            if (velocity.magnitude > percentageOfMaxSpeedToStep * scale)
+            {
+                Debug.Log("step step");
+                if (!grassWalking.isPlaying)
+                {
+                    grassWalking.Play();
+                }
+            }
+            else
+            {
+                grassWalking.Stop();
+            }
+        }
 	}
 
 	private void InputMovement()
@@ -151,6 +167,7 @@ public class PlayerMult : MonoBehaviour
 		ns.syncTime += Time.deltaTime;
 		GetComponent<Rigidbody2D>().position = Vector2.Lerp(ns.syncStartPosition, ns.syncEndPosition, ns.syncTime / ns.syncDelay);
 		transform.position = GetComponent<Rigidbody2D> ().position;
+        velocity = ns.syncVelocity;
 	}
 	void OnTriggerEnter2D(Collider2D other)
     {
