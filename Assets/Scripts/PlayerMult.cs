@@ -17,9 +17,10 @@ public class PlayerMult : MonoBehaviour
     public float knifeCooldown;
     private float knifeTimer = 0;
     private bool canThrow = true;
-
-    public AudioClip knifeThrowSound;
-    private AudioSource audio;
+	public float percentageOfMaxSpeedToStep;
+	
+    public AudioSource knifeRegain;
+	public AudioSource grassWalking;
 
 	//Sync
 	private NetworkSync ns;
@@ -27,6 +28,7 @@ public class PlayerMult : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+
         velocity = Vector3.zero;
 		if (playerPV.isMine) {
 			cameraTransform = Camera.main.transform;
@@ -42,7 +44,6 @@ public class PlayerMult : MonoBehaviour
             Destroy(gameObject.GetComponent<AudioListener>());
         }
 		ns = GetComponent<NetworkSync> ();
-        audio = GetComponent<AudioSource>();
     }
 	// Update is called once per frame
 	void Update ()
@@ -68,6 +69,11 @@ public class PlayerMult : MonoBehaviour
 				}
 			} else {
 				if (knifeTimer > knifeCooldown) {
+
+                    if (!knifeRegain.isPlaying)
+                    {
+                        knifeRegain.Play();
+                    }
 					knifeTimer = 0;
 					canThrow = true;
 					knifeFillImage.fillAmount = 1;
@@ -81,10 +87,20 @@ public class PlayerMult : MonoBehaviour
             //Keeping player at a z-pos of 0
 
             //Moving player and then camera
-            //GetComponent<Rigidbody> ().MovePosition (GetComponent<Rigidbody> ().position + (velocity * Time.deltaTime));
+			Debug.Log (velocity.magnitude);
+			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
+			{
+				if(!grassWalking.isPlaying)
+				{
+					grassWalking.Play();
+				}
+			}
+			else
+			{
+				grassWalking.Stop ();
+			}
             GetComponent<Rigidbody2D>().velocity = velocity;
             transform.position = GetComponent<Rigidbody2D> ().position;
-            //Debug.Log(GetComponent<Rigidbody>().velocity);
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
 		} 
 		else 
