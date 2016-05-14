@@ -27,7 +27,6 @@ public class MapGeneration : MonoBehaviour {
 
             if (roundSplashTimer > roundSpashDuration)
             {
-
                 objectiveSplash.enabled = false;
             }
         }
