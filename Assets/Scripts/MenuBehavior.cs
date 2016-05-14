@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 
 public class MenuBehavior : MonoBehaviour
 {
     public GameObject[] objectsToToggle;
 
-    public void switchLevel(string levelName)
+    public void SwitchLevel(string levelName)
     {
         Application.LoadLevel(levelName);
+    }
+
+    public void StartGame()
+    {
+        string inputRoomName = GameObject.Find("Room Input Field/Text").GetComponent<Text>().text;
+        NetworkManager.roomName = (inputRoomName == "" ? "BlindRoom" : inputRoomName);
+        SwitchLevel("ingame");
     }
 
     public void ExitGame()
