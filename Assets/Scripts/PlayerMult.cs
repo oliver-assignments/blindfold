@@ -100,7 +100,7 @@ public class PlayerMult : MonoBehaviour
 			}
             GetComponent<Rigidbody2D>().velocity = velocity;
             transform.position = GetComponent<Rigidbody2D> ().position;
-			cameraTransform.position = transform.position + new Vector3 (0, 0, -20);
+			cameraTransform.position = transform.position + new Vector3 (0, 0, -1);
 		} 
 		else 
 		{
