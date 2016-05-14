@@ -6,10 +6,10 @@ public class WindManager : Singleton<WindManager>
     public List<Rigidbody2D> wind = new List<Rigidbody2D>();
 
     public float maxWindDistance = 1;
-    public float windSpacingForce =1;
+    public float windSpacingForce = 1;
     
-    public float windResistForce =1;
-    public float wrapDistanceFromOrigin = 1;
+    public float windResistForce = 1;
+    public Vector2 wrapDistanceFromOrigin = new Vector2(15, 6);
 
     
     private float windSpeed = 0;
@@ -30,10 +30,10 @@ public class WindManager : Singleton<WindManager>
 
         for (int q = 0; q < wind.Count; q++)
         {
-            if (wind[q].position.x > wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x - (wrapDistanceFromOrigin * 2), wind[q].position.y);
-            if (wind[q].position.x < -wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x + (wrapDistanceFromOrigin * 2), wind[q].position.y);
-            if (wind[q].position.y > wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y - (wrapDistanceFromOrigin * 2));
-            if (wind[q].position.y < -wrapDistanceFromOrigin) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y + (wrapDistanceFromOrigin * 2));
+            if (wind[q].position.x > wrapDistanceFromOrigin.x) wind[q].position = new Vector2(wind[q].position.x - (wrapDistanceFromOrigin.x * 2), wind[q].position.y);
+            if (wind[q].position.x < -wrapDistanceFromOrigin.x) wind[q].position = new Vector2(wind[q].position.x + (wrapDistanceFromOrigin.x * 2), wind[q].position.y);
+            if (wind[q].position.y > wrapDistanceFromOrigin.y) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y - (wrapDistanceFromOrigin.y * 2));
+            if (wind[q].position.y < -wrapDistanceFromOrigin.y) wind[q].position = new Vector2(wind[q].position.x, wind[q].position.y + (wrapDistanceFromOrigin.y * 2));
         }
     }
     void Breeze()
