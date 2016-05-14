@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class NetworkManager : Photon.MonoBehaviour {
@@ -18,7 +19,6 @@ public class NetworkManager : Photon.MonoBehaviour {
 		if (ConnectInUpdate && AutoConnect && !PhotonNetwork.connected)
 		{
 			Debug.Log("Update() was called by Unity. Scene is loaded. Let's connect to the Photon Master Server. Calling: PhotonNetwork.ConnectUsingSettings();");
-
 			ConnectInUpdate = false;
 			PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
 		}
@@ -34,7 +34,8 @@ public class NetworkManager : Photon.MonoBehaviour {
 		Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinOrCreateRoom();");
 		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
-	}
+        GameObject.Find("Canvas/Room Label").GetComponent<Text>().text = "Room: " + roomName;
+    }
 
 	public virtual void OnJoinedLobby()
 	{

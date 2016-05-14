@@ -56,6 +56,7 @@ public class KnifeThrow : MonoBehaviour
             if (lifespan <= 0)
             {
                 Kill(fallenSound);
+                collided = true;
             }
             if (expired)
             {
@@ -75,7 +76,7 @@ public class KnifeThrow : MonoBehaviour
         if (o.gameObject.tag == "Player" && lifespan < 3.9)
         {
             collided = true;
-            PhotonNetwork.Destroy(o.gameObject); //.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
+            o.gameObject.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
             PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)), 0);
             if (GetComponent<PhotonView>().isMine)
                 Kill(playerHitSound);
