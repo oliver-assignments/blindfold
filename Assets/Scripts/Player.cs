@@ -87,16 +87,18 @@ public class Player : MonoBehaviour
  
 		//store Movement
 		movement = new Vector2 (h, v);
-		
-		//following code used to make player character face mouse
-		Vector2 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition);       //Mouse position
-		Vector3 objpos = Camera.main.WorldToViewportPoint(transform.position);        //Object position on screen
-		Vector2 relobjpos = new Vector2(objpos.x - 0.5f, objpos.y - 0.5f);            //Set coordinates relative to object's center
-		Vector2 relmousepos = new Vector2(mouse.x - 0.5f, mouse.y - 0.5f) - relobjpos;//Mouse cursor relative to object's center
-		float angle = Vector2.Angle(Vector2.up, relmousepos);                         //Angle calculation
-		
+
+		// Distance from camera to object. In case it becomes !0.
+		float camDis = cameraTransform.position.y - this.transform.position.y;
+
+		// Get the mouse position in world space. Using camDis for the Z axis.
+		Vector3 mouse = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, camDis));
+
+		float AngleRad = Mathf.Atan2 (mouse.y - transform.position.y, mouse.x - transform.position.x);
+		float angle = (180 / Mathf.PI) * AngleRad - 90;
+
 		//if mouse is on the left side of our object
-		if (relmousepos.x > 0)
+		if (Input.mousePosition.x < 0)
 			angle = 360 - angle;
 		
 		//Uncomment this block to make the player move based on the mouse cursor
