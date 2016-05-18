@@ -117,7 +117,7 @@ public class PlayerMult : MonoBehaviour
 			    Debug.Log (velocity.magnitude);
 			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
 			{
-                Debug.Log("step step");
+                //Debug.Log("step step");
 				if(!grassWalking.isPlaying)
 				{
 					grassWalking.Play();

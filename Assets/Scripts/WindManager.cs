@@ -44,7 +44,7 @@ public class WindManager : Singleton<WindManager>
     }
     void Breeze()
     {
-		currTime = (float)Network.time;
+		currTime = (float)PhotonNetwork.time;
 		windDirection = (float)(breezeRotationSpeed * currTime);
 
         //  Wind speed oscillates from -max to +max 
