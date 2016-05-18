@@ -5,6 +5,7 @@ public class KnifeThrow : MonoBehaviour
 {
     [SerializeField]
     private float lifespan = 4;
+	private float currentLifetime;
     [SerializeField]
     private float speed = 3;
     [SerializeField]
@@ -22,7 +23,10 @@ public class KnifeThrow : MonoBehaviour
     private bool expired = false;
 
     // Use this for initialization
-    void Start() { }
+    void Start() {
+		currentLifetime = lifespan;
+	}
+
     void Kill(AudioClip clip)
     {
         expired = true;
@@ -53,8 +57,8 @@ public class KnifeThrow : MonoBehaviour
         {
             if (!collided)
                 GetComponent<Rigidbody2D>().velocity = vel;
-            lifespan -= Time.deltaTime;
-            if (lifespan <= 0)
+			currentLifetime -= Time.deltaTime;
+            if (currentLifetime <= 0)
             {
                 Kill(fallenSound);
                 collided = true;
@@ -79,8 +83,8 @@ public class KnifeThrow : MonoBehaviour
 			//Debug.Log(o.gameObject.tag);
 			if (o.gameObject.tag == "Player") 
 			{
-				Debug.Log (lifespan);
-				if (lifespan < 3.9) 
+				Debug.Log (currentLifetime);
+				if (currentLifetime < lifespan-0.1) 
 				{
 					//Debug.Log (id);
 					//Debug.Log (o.gameObject.GetComponent<PlayerMult> ().GetID ());
@@ -99,7 +103,7 @@ public class KnifeThrow : MonoBehaviour
 
 
 			} else {
-				Debug.Log (lifespan);
+				Debug.Log (currentLifetime);
 				collided = true;
 				//Embed self in object, stop moving.
 				transform.position += transform.forward * 0.1f;
