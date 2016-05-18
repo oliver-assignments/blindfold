@@ -5,6 +5,7 @@ public class KnifeThrow : MonoBehaviour
 {
     [SerializeField]
     private float lifespan = 4;
+	private float currentLifetime;
     [SerializeField]
     private float speed = 3;
     [SerializeField]
@@ -22,7 +23,10 @@ public class KnifeThrow : MonoBehaviour
     private bool expired = false;
 
     // Use this for initialization
-    void Start() { }
+    void Start() {
+		currentLifetime = lifespan;
+	}
+
     void Kill(AudioClip clip)
     {
         expired = true;
@@ -38,7 +42,7 @@ public class KnifeThrow : MonoBehaviour
     public void Setup(GameObject shooter)
     {
         id = shooter.GetComponent<PlayerMult>().GetID();
-        Debug.Log(id);
+        //Debug.Log(id);
         GetComponent<MeshRenderer>().enabled = true;
         transform.forward = shooter.transform.up;
         transform.position = shooter.transform.position + transform.forward;
@@ -53,8 +57,8 @@ public class KnifeThrow : MonoBehaviour
         {
             if (!collided)
                 GetComponent<Rigidbody2D>().velocity = vel;
-            lifespan -= Time.deltaTime;
-            if (lifespan <= 0)
+			currentLifetime -= Time.deltaTime;
+            if (currentLifetime <= 0)
             {
                 Kill(fallenSound);
                 collided = true;
@@ -73,33 +77,40 @@ public class KnifeThrow : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D o)
     {
-        Debug.Log(o.gameObject.tag);
-        if (o.gameObject.tag == "Player" && lifespan < 3.9)
-        {
-            Debug.Log(id);
-            Debug.Log(o.gameObject.GetComponent<PlayerMult>().GetID());
-            if(o.gameObject.GetInstanceID() == id)
-            {
-                return;
-            }
-            collided = true;
-            o.gameObject.GetComponent<PhotonView>().RPC("Respawn", PhotonTargets.All);
-            PhotonNetwork.Instantiate(killMarker.name, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)), 0);
-            if (GetComponent<PhotonView>().isMine)
-                Kill(playerHitSound);
-        }
-        else if (o.gameObject.tag == "Wind")
-        {
+		//if (!collided) 
+		{
+
+			//Debug.Log(o.gameObject.tag);
+			if (o.gameObject.tag == "Player") 
+			{
+				Debug.Log (currentLifetime);
+				if (currentLifetime < lifespan-0.005) 
+				{
+					//Debug.Log (id);
+					//Debug.Log (o.gameObject.GetComponent<PlayerMult> ().GetID ());
+					if (o.gameObject.GetInstanceID () == id) {
+						return;
+					}
+					collided = true;
+					o.gameObject.GetComponent<PhotonView> ().RPC ("Respawn", PhotonTargets.All);
+					PhotonNetwork.Instantiate (killMarker.name, transform.position, Quaternion.Euler (0, 0, Random.Range (0, 360)), 0);
+					if (GetComponent<PhotonView> ().isMine)
+						Kill (playerHitSound);
+				} else {
+					Debug.Log ("Too soon");
+				}
+			} else if (o.gameObject.tag == "Wind") {
 
 
-        }
-        else {
-            collided = true;
-            //Embed self in object, stop moving.
-            transform.position += transform.forward * 0.1f;
-            Kill(blockHitSound);
-        }
-    }
+			} else {
+				Debug.Log (currentLifetime);
+				collided = true;
+				//Embed self in object, stop moving.
+				transform.position += transform.forward * 0.1f;
+				Kill (blockHitSound);
+			}
+		}
+	}
     [PunRPC]
     void SetKnife(Vector3 vel, Vector3 pos, int owner)
     {

@@ -7,7 +7,7 @@ public class PlayerMult : MonoBehaviour
     private Transform cameraTransform;
     public Vector3 velocity;
 
-	private float scale = 2.5f;
+	private float scale = 3f;
 	private Vector2 movement;
 	[SerializeField]
 	private PhotonView playerPV;
@@ -117,7 +117,7 @@ public class PlayerMult : MonoBehaviour
 			    Debug.Log (velocity.magnitude);
 			if(velocity.magnitude > percentageOfMaxSpeedToStep*scale)
 			{
-                Debug.Log("step step");
+                //Debug.Log("step step");
 				if(!grassWalking.isPlaying)
 				{
 					grassWalking.Play();
