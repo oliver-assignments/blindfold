@@ -32,7 +32,7 @@ public class NetworkManager : Photon.MonoBehaviour {
 	public virtual void OnConnectedToMaster()
 	{
 		Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinOrCreateRoom();");
-		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
+		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 8 };
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
         GameObject.Find("Canvas/Room Label").GetComponent<Text>().text = "Room: " + roomName;
     }
@@ -40,14 +40,14 @@ public class NetworkManager : Photon.MonoBehaviour {
 	public virtual void OnJoinedLobby()
 	{
 		Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinOrCreateRoom();");
-		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
+		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 8 };
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
 	public virtual void OnPhotonRandomJoinFailed()
 	{
 		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
-		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 4 };
+		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 8 };
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 

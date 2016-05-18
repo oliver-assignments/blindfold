@@ -28,8 +28,6 @@ public class WindManager : Singleton<WindManager>
     public float minWindVolume = 0.25f;
 
 	private float currTime;
-	private float lastTime;
-	private float delta;
 
     // Update is called once per frame
     void Update()
@@ -47,13 +45,12 @@ public class WindManager : Singleton<WindManager>
     void Breeze()
     {
 		currTime = (float)Network.time;
-		delta = currTime - lastTime;
-        windDirection += breezeRotationSpeed * delta;
+		windDirection = (float)(breezeRotationSpeed * currTime);
 
         //  Wind speed oscillates from -max to +max 
         ambientWindSource.volume = minWindVolume + (Mathf.Abs(Mathf.Sin(windPhase))*(maxWindVolume-minWindVolume));
 
-        windPhase += breezeBackAndForthSpeed * delta;
+		windPhase = breezeBackAndForthSpeed * currTime;
         float windSpeed = Mathf.Sin(windPhase) * breezeForce;
 
         for (int q = 0; q < wind.Count; q++)
@@ -62,6 +59,5 @@ public class WindManager : Singleton<WindManager>
                     wind[q].velocity.x + ((Mathf.Cos(windDirection) * windSpeed) / wind[q].mass),
                     wind[q].velocity.y + ((Mathf.Sin(windDirection) * windSpeed) / wind[q].mass));
         }
-		lastTime = currTime;
     }
 }

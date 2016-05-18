@@ -84,7 +84,7 @@ public class KnifeThrow : MonoBehaviour
 			if (o.gameObject.tag == "Player") 
 			{
 				Debug.Log (currentLifetime);
-				if (currentLifetime < lifespan-0.1) 
+				if (currentLifetime < lifespan-0.005) 
 				{
 					//Debug.Log (id);
 					//Debug.Log (o.gameObject.GetComponent<PlayerMult> ().GetID ());
