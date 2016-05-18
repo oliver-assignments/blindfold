@@ -20,7 +20,7 @@ public class PlayerMult : MonoBehaviour
     [SerializeField]
     private float secondsBeforeRespawn = 3;
     private float respawnTimer = 0;
-    private Text respawnText;
+    private Text respawnText, fpsText;
 
     private int id;
     private bool canThrow = true;
@@ -37,9 +37,11 @@ public class PlayerMult : MonoBehaviour
     {
 
         velocity = Vector3.zero;
-		if (playerPV.isMine) {
+		if (playerPV.isMine)
+        {
             respawnText = GameObject.Find("Canvas/Respawn").GetComponent<Text>();
-			cameraTransform = Camera.main.transform;
+            fpsText = GameObject.Find("Canvas/FPS Counter").GetComponent<Text>();
+            cameraTransform = Camera.main.transform;
 			knifeFillImage = GameObject.FindGameObjectWithTag ("Fill").GetComponent<Image> ();
 			knifeFillImage.color = new Color (1, 0, 0, 1);
 			knifeFillImage.fillAmount = 0;
@@ -130,6 +132,7 @@ public class PlayerMult : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = velocity;
             transform.position = GetComponent<Rigidbody2D> ().position;
 			cameraTransform.position = transform.position + new Vector3 (0, 0, -1);
+            fpsText.text = "FPS: " + (1/Time.deltaTime).ToString("F1");
 		} 
 		else 
 		{
