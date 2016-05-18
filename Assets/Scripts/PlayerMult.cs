@@ -7,7 +7,7 @@ public class PlayerMult : MonoBehaviour
     private Transform cameraTransform;
     public Vector3 velocity;
 
-	private float scale = 2.5f;
+	private float scale = 3f;
 	private Vector2 movement;
 	[SerializeField]
 	private PhotonView playerPV;
